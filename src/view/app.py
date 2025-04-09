@@ -109,7 +109,6 @@ class App:
         if self.file_path:
             processor = Cnab(self.file_path)
             processor.process()
-            os.remove(self.file_path)
 
     def create_panel_section(self, title, content):
         return ft.Container(
