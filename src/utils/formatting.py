@@ -7,9 +7,13 @@ def cnpj_format(cnpj: str) -> str:
 
 def date_format(date: str) -> str:
     try:
+        from datetime import datetime
+        if not date or len(date.strip()) != 8 or not date.strip().isdigit():
+            return None
+        data_valida = datetime(int(date[4:8]), int(date[2:4]), int(date[0:2]))
         return f"{date[4:8]}-{date[2:4]}-{date[0:2]}"
     except Exception:
-        None
+        return None
 
 
 def value_format(value: str) -> float:
