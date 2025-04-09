@@ -3,7 +3,7 @@ def cnpj_format(cnpj: str) -> str:
 
 
 def date_format(date: str) -> str:
-    return f"{date[:2]}/{date[2:4]}/{date[4:]}"
+    return f"{date[4:]}-{date[2:4]}-{date[:2]}"
 
 
 def value_format(value: str) -> float:
