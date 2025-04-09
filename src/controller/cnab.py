@@ -32,9 +32,3 @@ class Cnab:
                     )
                 )
                 close_connection()
-
-
-# Example usage
-if __name__ == "__main__":
-    processor = Cnab('assets/docs/cnab.ret')
-    processor.process()
