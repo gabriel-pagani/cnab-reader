@@ -45,7 +45,7 @@ def server_request(query: str, params: tuple = None) -> dict:
                 connection.commit()
 
     except Error as e:
-        error(f"Erro de banco de dados: {e}")
+        error(f"Erro de banco de dados: {e} | Parâmetros: {params}")
 
     except Exception as e:
         error(f"Erro inesperado: {e}")
