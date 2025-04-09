@@ -31,23 +31,32 @@ class Cnab:
         """Process the CNAB content and insert into database"""
         try:
             for row in content:
-                if row[7] in ['1', '3', '5']:
-                    desc = None if row[7] != '3' else row[176:201].lower(
-                    ).strip()
 
+                cnpj = row[18:32]
+                banco = row[0:3]
+                convenio = row[32:52]
+                agencia = row[52:57]
+                conta = row[58:70]
+                data = row[142:150]
+                valor = row[150:168]
+                tipo = row[168]
+                desc = row[176:201].lower()
+                tipo_registro = row[7]
+
+                if tipo_registro in ['1', '3', '5']:
                     server_request(
                         query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         params=(
-                            cnpj_format(row[18:32]),       # Cnpj
-                            row[0:3],                      # Banco
-                            code_format(row[32:52]),       # Convênio
-                            code_format(row[52:57]),       # Agência
-                            code_format(row[58:70]),       # Conta
-                            date_format(row[142:150]),     # Data Lançamento
-                            value_format(row[150:168]),    # Valor Lançamento
-                            row[168],                      # Tipo Lançamento
-                            desc,                          # Descrição
-                            row[7]                         # Tipo Registro
+                            cnpj_format(cnpj),
+                            banco,
+                            code_format(convenio),
+                            code_format(agencia),
+                            code_format(conta),
+                            date_format(data),
+                            value_format(valor),
+                            tipo,
+                            desc,
+                            tipo_registro
                         )
                     )
                     close_connection()
