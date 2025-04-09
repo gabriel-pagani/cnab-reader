@@ -1,7 +1,7 @@
 from pyodbc import connect, Error
 from os import getenv
 from dotenv import load_dotenv
-from logging import error, basicConfig, ERROR
+from logging import error
 
 
 load_dotenv()

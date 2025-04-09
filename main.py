@@ -1,14 +1,10 @@
-from flet import Page, app
-from src.view.app import App
 from src.utils.connection import close_connection
-
-
-def main(page: Page) -> None:
-    App(page)
+from src.controller.cnab import Cnab
 
 
 if __name__ == "__main__":
     try:
-        app(target=main, assets_dir='assets')
+        processor = Cnab()
+        processor.process()
     finally:
         close_connection()
