@@ -8,3 +8,7 @@ def date_format(date: str) -> str:
 
 def value_format(value: str) -> float:
     return float(value) / 100
+
+
+def code_format(code: str) -> str:
+    return str(int(code))
