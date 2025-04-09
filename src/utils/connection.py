@@ -6,8 +6,6 @@ from logging import error, basicConfig, ERROR
 
 load_dotenv()
 _connection = None
-basicConfig(format='%(asctime)s - %(levelname)s - %(filename)s - %(message)s',
-            filename='main.log', level=ERROR)
 
 
 def get_connection() -> connect:
