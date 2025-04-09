@@ -1,14 +1,26 @@
 def cnpj_format(cnpj: str) -> str:
-    return f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:]}"
+    try:
+        return f"{cnpj[0:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:14]}"
+    except Exception:
+        return None
 
 
 def date_format(date: str) -> str:
-    return f"{date[4:]}-{date[2:4]}-{date[:2]}"
+    try:
+        return f"{date[4:8]}-{date[2:4]}-{date[0:2]}"
+    except Exception:
+        None
 
 
 def value_format(value: str) -> float:
-    return float(value) / 100
+    try:
+        return float(value) / 100
+    except Exception:
+        return None
 
 
 def code_format(code: str) -> str:
-    return str(int(code))
+    try:
+        return str(int(code))
+    except Exception:
+        return None
