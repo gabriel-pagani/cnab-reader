@@ -1,9 +1,7 @@
 from src.utils.formatting import cnpj_format, date_format, value_format, code_format
 from src.utils.connection import server_request, close_connection
 from logging import error
-from os import listdir, path, system
-from time import sleep
-from threading import Thread
+from os import listdir, path
 
 
 class Cnab:
@@ -67,20 +65,8 @@ class Cnab:
             error(f"Erro ao inserir os dados na tabela: {e}")
             close_connection()
 
-    def message(self):
-        """Thread para mostrar a mensagem de monitoramento com animação"""
-        msgs = ['Monitorando diretórios.',
-                'Monitorando diretórios..',
-                'Monitorando diretórios...']
-        while True:
-            for msg in msgs:
-                system('cls')
-                print(msg)
-                sleep(0.5)
-
     def monitor(self):
         """Monitora continuamente as pastas em busca de novos arquivos .ret"""
-        Thread(target=self.message, daemon=True).start()
         try:
             while True:
                 for folder in self.folder_path:
