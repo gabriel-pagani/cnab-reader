@@ -27,7 +27,7 @@ class Cnab:
             error(f"Erro ao ler o arquivo: {e}")
 
     @staticmethod
-    def process(content: list) -> None:
+    def process(content: list, file: str) -> None:
         """Process the CNAB content and insert into database"""
         try:
             for row in content:
@@ -40,12 +40,12 @@ class Cnab:
                 data = row[142:150]
                 valor = row[150:168]
                 tipo = row[168]
-                desc = row[176:201].lower()
+                desc = row[176:201] if row[7] == '3' else None
                 tipo_registro = row[7]
 
                 if tipo_registro in ['1', '3', '5']:
                     server_request(
-                        query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis, arquivo_importado) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         params=(
                             cnpj_format(cnpj),
                             banco,
@@ -56,7 +56,8 @@ class Cnab:
                             value_format(valor),
                             tipo,
                             desc,
-                            tipo_registro
+                            tipo_registro,
+                            file
                         )
                     )
                     close_connection()
@@ -73,7 +74,7 @@ class Cnab:
                     for file in files:
                         if file.lower().endswith('.ret'):
                             file_path = path.join(folder, file)
-                            Cnab.process(Cnab.read(file_path))
+                            Cnab.process(Cnab.read(file_path), file)
 
                 break
         except Exception as e:
