@@ -40,7 +40,7 @@ class Cnab:
                 data = row[142:150]
                 valor = row[150:168]
                 tipo = row[168]
-                desc = row[176:201] if row[7] == '3' else None
+                desc = row[176:201].upper() if row[7] == '3' else None
                 tipo_registro = row[7]
 
                 if tipo_registro in ['1', '3', '5']:
@@ -72,10 +72,13 @@ class Cnab:
                 for folder in self.folder_path:
                     files = listdir(folder)
                     for file in files:
-                        if file.lower().endswith('.ret'):
+                        response = server_request(
+                            query="select id from zcnab where arquivo_importado = ?",
+                            params=(file)
+                        )
+                        if file.lower().endswith('.ret') and response['data'] == []:
                             file_path = path.join(folder, file)
                             Cnab.process(Cnab.read(file_path), file)
 
-                break
         except Exception as e:
             error(f"Erro durante o monitoramento: {e}")
