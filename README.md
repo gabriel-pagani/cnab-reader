@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 
 # Configuração
-Na pasta cnab-reader crie o ".env". Dentro do arquivo ".env" adicione o seguinte conteúdo
+Na pasta cnab-reader crie o arquivo ".env". Dentro do arquivo ".env" adicione o seguinte conteúdo
 ```
 SERVER=endereco_do_seu_servidor
 DATABASE=nome_da_sua_base_de_dados
