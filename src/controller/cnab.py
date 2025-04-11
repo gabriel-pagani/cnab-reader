@@ -45,7 +45,7 @@ class Cnab:
 
                 if tipo_registro in ['1', '3', '5']:
                     server_request(
-                        query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis, arquivo_importado) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis, arqvimport) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                         params=(
                             cnpj_format(cnpj),
                             banco,
@@ -73,7 +73,7 @@ class Cnab:
                     files = listdir(folder)
                     for file in files:
                         response = server_request(
-                            query="select id from zcnab where arquivo_importado = ?",
+                            query="select id from zcnab where arqvimport = ?",
                             params=(file)
                         )
                         if file.lower().endswith('.ret') and response['data'] == []:
