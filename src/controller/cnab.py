@@ -40,7 +40,8 @@ class Cnab:
                 data = row[142:150]
                 valor = row[150:168]
                 tipo = row[168]
-                desc = row[176:201].upper() if row[7] == '3' else None
+                desc = row[176:201].upper(
+                ) if row[7] == '3' and not row[176:201].isspace() else None
                 tipo_registro = row[7]
 
                 if tipo_registro in ['1', '3', '5']:
