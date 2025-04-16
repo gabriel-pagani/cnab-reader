@@ -66,17 +66,16 @@ class Cnab:
     def monitor(self):
         """Monitora continuamente as pastas em busca de novos arquivos .ret"""
         try:
-            while True:
-                for folder in self.folder_path:
-                    files = listdir(folder)
-                    for file in files:
-                        response = server_request(
-                            query="select id from zcnab where arqvimport = ?",
-                            params=(file)
-                        )
-                        if file.lower().endswith('.ret') and response['data'] == []:
-                            file_path = path.join(folder, file)
-                            Cnab.process(Cnab.read(file_path), file)
+            for folder in self.folder_path:
+                files = listdir(folder)
+                for file in files:
+                    response = server_request(
+                        query="select id from zcnab where arqvimport = ?",
+                        params=(file)
+                    )
+                    if file.lower().endswith('.ret') and response['data'] == []:
+                        file_path = path.join(folder, file)
+                        Cnab.process(Cnab.read(file_path), file)
 
         except Exception as e:
             error(f"Erro durante o monitoramento: {e}")
