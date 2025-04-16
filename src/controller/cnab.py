@@ -2,19 +2,16 @@ from src.utils.formatting import cnpj_format, date_format, value_format, code_fo
 from src.utils.connection import server_request, close_connection
 from logging import error
 from os import listdir, path
+from dotenv import load_dotenv
+from os import getenv
+
+
+load_dotenv()
 
 
 class Cnab:
     def __init__(self):
-        self.folder_path = [
-            r"\\192.168.42.153\Extratos\BRS Vias\Bradesco",
-            r"\\192.168.42.153\Extratos\ICD\Bradesco",
-            r"\\192.168.42.153\Extratos\ICD\UNICRED",
-            r"\\192.168.42.153\Extratos\Sinasc Construcao\Bradesco",
-            r"\\192.168.42.153\Extratos\Sinasc Construcao\BS2",
-            r"\\192.168.42.153\Extratos\Sinasc Construcao\Santander",
-            r"\\192.168.42.153\Extratos\Sinasc Construcao\Sicoob",
-        ]
+        self.folder_path = getenv("FOLDER_PATH").split(",")
 
     @staticmethod
     def read(file_path: str) -> list:
