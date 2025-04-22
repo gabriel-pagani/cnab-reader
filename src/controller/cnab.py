@@ -62,6 +62,19 @@ class Cnab:
         except Exception as e:
             error(f"Erro ao inserir os dados na tabela: {e}")
 
+    def counter(self) -> None:
+        """Conta o número total de registros do tipo 1, 3 ou 5 em todos os arquivos"""
+        count = 0
+        for folder in self.folder_path:
+            for file in listdir(folder):
+                if file.lower().endswith('.ret'):
+                    file_path = path.join(folder, file)
+                    content = Cnab.read(file_path)
+                    for row in content:
+                        if row[7] in ['1', '3', '5']:
+                            count += 1
+        print(count)
+
     def monitor_folder(self, folder):
         """Monitora continuamente as pastas em busca de novos arquivos .ret"""
         try:
