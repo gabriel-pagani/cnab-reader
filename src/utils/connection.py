@@ -5,19 +5,15 @@ from logging import error
 
 
 load_dotenv()
-_connection = None
 
 
 def get_connection() -> connect:
-    global _connection
-    if _connection is None or _connection.closed:
-        server_connection = f'DRIVER={{SQL Server}}; SERVER={getenv("SERVER")}; DATABASE={getenv("DATABASE")}; UID={getenv("USER")}; PWD={getenv("PASSWORD")}'
-        try:
-            _connection = connect(server_connection)
-        except Error as e:
-            error(f"Erro ao conectar ao banco de dados: {e}")
-            raise
-    return _connection
+    server_connection = f'DRIVER={{SQL Server}}; SERVER={getenv("SERVER")}; DATABASE={getenv("DATABASE")}; UID={getenv("USER")}; PWD={getenv("PASSWORD")}'
+    try:
+        return connect(server_connection)
+    except Error as e:
+        error(f"Erro ao conectar ao banco de dados: {e}")
+        raise
 
 
 def server_request(query: str, params: tuple = None) -> dict:
@@ -49,12 +45,10 @@ def server_request(query: str, params: tuple = None) -> dict:
 
     except Exception as e:
         error(f"Erro inesperado: {e}")
+    finally:
+        try:
+            connection.close()
+        except:
+            pass
 
     return response
-
-
-def close_connection():
-    global _connection
-    if _connection and not _connection.closed:
-        _connection.close()
-        _connection = None
