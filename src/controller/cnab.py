@@ -28,6 +28,7 @@ class Cnab:
     def process(content: list, file: str) -> None:
         """Process the CNAB content and insert into database"""
         try:
+            datager = None
             for row in content:
 
                 cnpj = row[18:32]
@@ -42,23 +43,27 @@ class Cnab:
                 ) if row[7] == '3' and not row[176:201].isspace() else None
                 tipo_registro = row[7]
 
-                if tipo_registro in ['1', '3', '5']:
-                    server_request(
-                        query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis, arqvimport) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                        params=(
-                            cnpj_format(cnpj),
-                            banco,
-                            code_format(convenio),
-                            code_format(agencia),
-                            code_format(conta),
-                            date_format(data),
-                            value_format(valor),
-                            tipo,
-                            desc,
-                            tipo_registro,
-                            file
+                if tipo_registro in ['0', '1', '3', '5']:
+                    if tipo_registro == '0':
+                        datager = date_format(row[143:151])
+                    else:
+                        server_request(
+                            query='insert into zcnab (colcnpj, banco, convenio, agencia, conta, datalan, valorlan, tipolan, desclan, tiporegis, datager, arqvimport) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                            params=(
+                                cnpj_format(cnpj),
+                                banco,
+                                code_format(convenio),
+                                code_format(agencia),
+                                code_format(conta),
+                                date_format(data),
+                                value_format(valor),
+                                tipo,
+                                desc,
+                                tipo_registro,
+                                datager,
+                                file
+                            )
                         )
-                    )
         except Exception as e:
             error(f"Erro ao inserir os dados na tabela: {e}")
 
