@@ -1,9 +1,10 @@
 from src.utils.formatting import cnpj_format, date_format, value_format, code_format
-from src.utils.connection import server_request, close_connection
+from src.utils.connection import server_request
 from logging import error
 from os import listdir, path
 from dotenv import load_dotenv
 from os import getenv
+from threading import Thread
 
 
 load_dotenv()
@@ -58,24 +59,31 @@ class Cnab:
                             file
                         )
                     )
-                    close_connection()
         except Exception as e:
             error(f"Erro ao inserir os dados na tabela: {e}")
-            close_connection()
 
-    def monitor(self):
+    def monitor_folder(self, folder):
         """Monitora continuamente as pastas em busca de novos arquivos .ret"""
         try:
-            for folder in self.folder_path:
-                files = listdir(folder)
-                for file in files:
+            for file in listdir(folder):
+                if file.lower().endswith('.ret'):
                     response = server_request(
                         query="select id from zcnab where arqvimport = ?",
                         params=(file)
                     )
-                    if file.lower().endswith('.ret') and response['data'] == []:
+                    if response['data'] == []:
                         file_path = path.join(folder, file)
                         Cnab.process(Cnab.read(file_path), file)
-
         except Exception as e:
-            error(f"Erro durante o monitoramento: {e}")
+            error(f"Erro durante o monitoramento da pasta {folder}: {e}")
+
+    def monitor(self):
+        """Cria threads para monitorar múltiplas pastas paralelamente"""
+        threads = []
+        for folder in self.folder_path:
+            t = Thread(target=self.monitor_folder, args=(folder.strip(),))
+            t.start()
+            threads.append(t)
+
+        for t in threads:
+            t.join()
