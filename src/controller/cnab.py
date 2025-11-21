@@ -78,7 +78,7 @@ class Cnab:
                     for row in content:
                         if row[7] in ['1', '3', '5']:
                             count += 1
-        print(count)
+        return count
 
     def monitor_folder(self, folder):
         """Monitora continuamente as pastas em busca de novos arquivos .ret"""
