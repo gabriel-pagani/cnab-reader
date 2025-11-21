@@ -1,11 +1,6 @@
 # Descrição
 Esse sistema foi desenvolvido com o objetivo de automatizar a inserção de dados bancários no banco de dados
 
-# Pré-requisitos
-- Python 3.13+
-- Windows 11
-- SQL Server 18+
-
 # Instalação
 - Clone o repositório
 ```bash
